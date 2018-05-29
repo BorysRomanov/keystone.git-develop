@@ -1,3 +1,4 @@
+import xhr from 'xhr';
 import {
 	SELECT_ITEM,
 	LOAD_DATA,
@@ -6,11 +7,16 @@ import {
 	DRAG_MOVE_ITEM,
 	DRAG_RESET_ITEMS,
 	LOAD_RELATIONSHIP_DATA,
+	RESEND_EMAIL_ERROR,
+	RESEND_EMAIL_SUCCESS,
+	CLEAR_RESEND_EMAIL_MSG
+
 } from './constants';
 
 import {
 	loadItems,
 } from '../List/actions';
+import { setTimeout } from 'timers';
 
 /**
  * Select an item
@@ -191,4 +197,54 @@ export function resetItems () {
 	return {
 		type: DRAG_RESET_ITEMS,
 	};
+}
+
+export function resendEmail (payload) {
+	return (dispatch) => {
+		xhr({
+			method: 'POST',
+			body: JSON.stringify({
+				email: payload.email,
+				name: payload.name
+			}),
+			url: `/api/fileupload/${payload.id}/update`,
+			headers: {
+				"Content-Type": "application/json",
+				"authorization": "HAo3FXRitBqxiX1nKhXpHAZsMciLq8V6Rjs"
+			},
+		}, (err, resp, body) => {
+			if (err || resp.statusCode !== 200) {
+				dispatch(resendEmailError("Email hasn't been sent successfully"));
+				setTimeout(() => {
+					dispatch(clearResendEmailMsg());
+				}, 3000);
+				return;
+			}
+			// console.log('body', body)
+			dispatch(resendEmailSuccess('Email has been sent successfully'));
+			setTimeout(() => {
+				dispatch(clearResendEmailMsg());
+			}, 3000)
+		});
+	};
+}
+
+export function resendEmailError (msg) {
+	return {
+		type: RESEND_EMAIL_ERROR,
+		msg
+	};
+}
+
+export function resendEmailSuccess (msg) {
+	return {
+		type: RESEND_EMAIL_SUCCESS,
+		msg,
+	};
+}
+
+export function clearResendEmailMsg () {
+	return {
+		type: CLEAR_RESEND_EMAIL_MSG,
+	}
 }

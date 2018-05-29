@@ -143,6 +143,21 @@ var ItemView = React.createClass({
 		);
 	},
 	render () {
+		// Checking is it match '/file-uploads/' path this.props.routeParams.listId // itemId
+		const currentList = this.props.currentList;
+		if (this.props.routeParams.listId === 'file-uploads') {
+			if (currentList) {
+				const updatedFields = {};
+				Object.keys(currentList.fields).forEach(key => {
+					updatedFields[key] = {
+						...currentList.fields[key],
+						disabled: true
+					}
+				})
+				currentList.fields = updatedFields;
+			}
+		}
+
 		// If we don't have any data yet, show the loading indicator
 		if (!this.props.ready) {
 			return (
@@ -162,6 +177,7 @@ var ItemView = React.createClass({
 								list={this.props.currentList}
 								data={this.props.data}
 								toggleCreate={this.toggleCreateModal}
+								routeParams={this.props.routeParams}
 							/>
 							<CreateForm
 								list={this.props.currentList}
@@ -170,10 +186,11 @@ var ItemView = React.createClass({
 								onCreate={(item) => this.onCreate(item)}
 							/>
 							<EditForm
-								list={this.props.currentList}
+								list={currentList}
 								data={this.props.data}
 								dispatch={this.props.dispatch}
 								router={this.context.router}
+								resendEmail={this.props.resendEmail}
 							/>
 						</Container>
 						{this.renderRelationships()}
@@ -192,4 +209,5 @@ module.exports = connect((state) => ({
 	currentList: state.lists.currentList,
 	relationshipData: state.item.relationshipData,
 	drag: state.item.drag,
+	resendEmail: state.item.resendEmail,
 }))(ItemView);

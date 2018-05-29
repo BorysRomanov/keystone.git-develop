@@ -37,6 +37,7 @@ module.exports = Field.create({
 				ref="focusTarget"
 				type="url"
 				value={this.props.value}
+				disabled={this.props.disabled}
 			/>
 		);
 	},
@@ -49,9 +50,9 @@ module.exports = Field.create({
 		);
 	},
 	renderValue () {
-		const { value } = this.props;
+		const { value, disabled } = this.props;
 		return (
-			<FormInput noedit onClick={value && this.openValue}>
+			<FormInput noedit onClick={value && this.openValue} disabled={disabled}>
 				{value}
 			</FormInput>
 		);

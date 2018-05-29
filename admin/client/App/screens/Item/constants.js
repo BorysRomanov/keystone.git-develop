@@ -5,3 +5,6 @@ export const DATA_LOADING_ERROR = 'app/Item/DATA_LOADING_ERROR';
 export const DRAG_MOVE_ITEM = 'app/Item/DRAG_MOVE_ITEM';
 export const DRAG_RESET_ITEMS = 'app/Item/DRAG_RESET_ITEMS';
 export const LOAD_RELATIONSHIP_DATA = 'app/Item/LOAD_RELATIONSHIP_DATA';
+export const RESEND_EMAIL_ERROR = 'app/Item/RESEND_EMAIL_ERROR';
+export const RESEND_EMAIL_SUCCESS = 'app/Item/RESEND_EMAIL_SUCCESS';
+export const CLEAR_RESEND_EMAIL_MSG = 'app/Item/CLEAR_RESEND_EMAIL_MSG';

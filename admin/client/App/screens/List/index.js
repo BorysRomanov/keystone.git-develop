@@ -236,7 +236,7 @@ const ListView = React.createClass({
 	renderHeader () {
 		const items = this.props.items;
 		const { autocreate, nocreate, plural, singular } = this.props.currentList;
-
+		const createIsAvailable = this.props.routeParams.listId === 'file-uploads' ? false : !nocreate;
 		return (
 			<Container style={{ paddingTop: '2em' }}>
 				<ListHeaderTitle
@@ -258,7 +258,7 @@ const ListView = React.createClass({
 					expandOnClick={this.toggleTableWidth}
 
 					// create
-					createIsAvailable={!nocreate}
+					createIsAvailable={createIsAvailable}
 					createListName={singular}
 					createOnClick={autocreate
 						? this.createAutocreate

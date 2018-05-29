@@ -124,6 +124,7 @@ module.exports = React.createClass({
 					placeholder={this.props.format}
 					ref="input"
 					value={this.state.inputValue}
+					disabled={true}
 				/>
 				<Popout
 					isOpen={this.state.pickerIsOpen}

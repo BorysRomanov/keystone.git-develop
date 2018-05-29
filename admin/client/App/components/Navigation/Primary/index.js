@@ -89,7 +89,18 @@ var PrimaryNavigation = React.createClass({
 	renderNavigation () {
 		if (!this.props.sections || !this.props.sections.length) return null;
 
-		return this.props.sections.map((section) => {
+		const extendedSections = [...this.props.sections];
+		extendedSections.push({
+			key: 'statistic',
+			label: 'Statistic',
+			lists: [{
+				key: 'statistic',
+				label: 'Statistic',
+				path: 'statistic'
+			}]
+		})
+
+		return extendedSections.map((section) => {
 			// Get the link and the class name
 			const href = section.lists[0].external ? section.lists[0].path : `${Keystone.adminPath}/${section.lists[0].path}`;
 			const isActive = this.props.currentSectionKey && this.props.currentSectionKey === section.key;
@@ -109,6 +120,7 @@ var PrimaryNavigation = React.createClass({
 		});
 	},
 	render () {
+		const APP_VERSION = '0.1.96 (10601)';
 		if (!this.state.navIsVisible) return null;
 
 		return (
@@ -119,6 +131,10 @@ var PrimaryNavigation = React.createClass({
 						{this.renderNavigation()}
 					</ul>
 					{this.renderFrontLink()}
+					<div className="navbar-link-tutorial">
+						<span>{`Latest App Release: ${APP_VERSION}`}</span>
+						<span>Download the <a href="https://www.google.com/" target="_blank">Tutorial Document</a></span>
+					</div>					
 				</Container>
 			</nav>
 		);

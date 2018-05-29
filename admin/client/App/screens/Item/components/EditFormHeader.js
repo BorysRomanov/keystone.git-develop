@@ -142,9 +142,11 @@ export const EditFormHeader = React.createClass({
 			props.onClick = () => { this.toggleCreate(true); };
 		}
 		return (
-			<GlyphButton data-e2e-item-create-button="true" color="success" glyph="plus" position="left" {...props}>
-				<ResponsiveText hiddenXS={`New ${singular}`} visibleXS="Create" />
-			</GlyphButton>
+			this.props.routeParams.listId === 'file-uploads' ? null : (
+				<GlyphButton data-e2e-item-create-button="true" color="success" glyph="plus" position="left" {...props}>
+					<ResponsiveText hiddenXS={`New ${singular}`} visibleXS="Create" />
+				</GlyphButton>
+			)
 		);
 	},
 	render () {

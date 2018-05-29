@@ -64,7 +64,7 @@ var Base = module.exports.Base = {
 		return <FormNote html={this.props.note} />;
 	},
 	renderField () {
-		const { autoFocus, value, inputProps } = this.props;
+		const { autoFocus, value, disabled, inputProps } = this.props;
 		return (
 			<FormInput {...{
 				...inputProps,
@@ -74,11 +74,12 @@ var Base = module.exports.Base = {
 				onChange: this.valueChanged,
 				ref: 'focusTarget',
 				value,
+				disabled,
 			}} />
 		);
 	},
 	renderValue () {
-		return <FormInput noedit>{this.props.value}</FormInput>;
+		return <FormInput noedit disabled={this.props.disabled}>{this.props.value}</FormInput>;
 	},
 	renderUI () {
 		var wrapperClassName = classnames(

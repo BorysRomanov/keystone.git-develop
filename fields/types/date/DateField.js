@@ -63,7 +63,7 @@ module.exports = Field.create({
 	},
 	renderValue () {
 		return (
-			<FormInput noedit>
+			<FormInput noedit disabled={this.props.disabled}>
 				{this.format(this.props.value)}
 			</FormInput>
 		);

@@ -10,6 +10,9 @@ import {
 	DRAG_MOVE_ITEM,
 	DRAG_RESET_ITEMS,
 	LOAD_RELATIONSHIP_DATA,
+	RESEND_EMAIL_SUCCESS,
+	RESEND_EMAIL_ERROR,
+	CLEAR_RESEND_EMAIL_MSG,
 } from './constants';
 
 const initialState = {
@@ -24,6 +27,10 @@ const initialState = {
 		newSortOrder: null,
 		relationshipPath: false,
 	},
+	resendEmail: {
+		isSuccess: true,
+		msg: ''
+	}
 };
 
 function item (state = initialState, action) {
@@ -112,6 +119,26 @@ function item (state = initialState, action) {
 					[action.relationshipPath]: action.data,
 				},
 			});
+		case RESEND_EMAIL_SUCCESS:
+			return assign({}, state, {
+				resendEmail: {
+					isSuccess: true,
+					msg: action.msg
+				}
+			});
+		case RESEND_EMAIL_ERROR:
+			return assign({}, state, {
+				resendEmail: {
+					isSuccess: false,
+					msg: action.msg
+				}
+		});
+		case CLEAR_RESEND_EMAIL_MSG:
+			return assign({}, state, {
+				resendEmail: {
+					msg: ''
+				}
+		});
 		default:
 			return state;
 	}

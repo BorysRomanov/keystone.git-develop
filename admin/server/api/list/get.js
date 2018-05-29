@@ -23,10 +23,26 @@ module.exports = function (req, res) {
 		try { filters = JSON.parse(req.query.filters); }
 		catch (e) { } // eslint-disable-line no-empty
 	}
+	// Check is query string contain email
+	var searchByEmail;
+	if (req.query.search) {
+		var emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		searchByEmail = emailRegExp.test(req.query.search);
+		if (searchByEmail) {
+			var additionalFilter = {"email":{"mode":"contains","inverted":false,"value": req.query.search}}
+			if (typeof filters === 'object') {
+				filters = assign(filters, additionalFilter);
+			} else {
+				filters = additionalFilter;
+			}
+			
+		}
+	}
+
 	if (typeof filters === 'object') {
 		assign(where, req.list.addFiltersToQuery(filters));
 	}
-	if (req.query.search) {
+	if (req.query.search && !searchByEmail) {
 		assign(where, req.list.addSearchToQuery(req.query.search));
 	}
 	var query = req.list.model.find(where);

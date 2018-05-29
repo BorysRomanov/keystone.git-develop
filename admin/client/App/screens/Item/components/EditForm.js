@@ -22,7 +22,7 @@ import AltText from './AltText';
 import FooterBar from './FooterBar';
 import InvalidFieldType from '../../../shared/InvalidFieldType';
 
-import { deleteItem } from '../actions';
+import { deleteItem, resendEmail } from '../actions';
 
 import { upcase } from '../../../../utils/string';
 
@@ -213,6 +213,7 @@ var EditForm = React.createClass({
 				placeholder: nameField.label,
 				size: 'large',
 			};
+			nameFieldProps.disabled = this.props.router.params.listId === 'file-uploads';
 			return wrapNameField(
 				React.createElement(Fields[nameField.type], nameFieldProps)
 			);
@@ -368,7 +369,17 @@ var EditForm = React.createClass({
 			</div>
 		) : null;
 	},
+	resendEmail () {
+		const { id } = this.props.data;
+		const { name, email } = this.props.data.fields;
+		this.props.dispatch(resendEmail({
+			id,
+			name,
+			email
+		}));
+	},
 	render () {
+		const msgClassNane = this.props.resendEmail.isSuccess ? 'msg-success' : 'msg-errors'
 		return (
 			<form ref="editForm" className="EditForm-container">
 				{(this.state.alerts) ? <AlertMessages alerts={this.state.alerts} /> : null}
@@ -383,7 +394,23 @@ var EditForm = React.createClass({
 					</Grid.Col>
 					<Grid.Col large="one-quarter"><span /></Grid.Col>
 				</Grid.Row>
-				{this.renderFooterBar()}
+				{
+					this.props.router.params.listId === 'file-uploads' ? (
+						<div>
+							<button
+								onClick={this.resendEmail}
+								className="resend-email-btn"
+								disabled={!!this.props.resendEmail.msg}
+								type="button">Resend email</button>
+							{
+								!!this.props.resendEmail.msg ? (
+									<p className={msgClassNane}>{this.props.resendEmail.msg}</p>
+								) : ''
+							}
+						</div>
+					) : this.renderFooterBar()
+				}
+
 				<ConfirmationDialog
 					confirmationLabel="Reset"
 					isOpen={this.state.resetDialogIsOpen}
