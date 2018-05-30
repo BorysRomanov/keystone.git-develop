@@ -16,6 +16,7 @@ import Home from './screens/Home';
 import Item from './screens/Item';
 import List from './screens/List';
 import Statistic from './screens/Statistic';
+import Backgrounds from './screens/Backgrounds';
 
 import store from './store';
 
@@ -31,7 +32,8 @@ ReactDOM.render(
 		<Router history={history}>
 			<Route path={Keystone.adminPath} component={App}>
 				<IndexRoute component={Home} />
-				<Route path="backgrouns" component={Statistic} />
+				<Route path="backgrounds" component={Backgrounds} />
+				<Route path="statistic" component={Statistic} />
 				<Route path=":listId" component={List} />
 				<Route path=":listId/:itemId" component={Item} />
 			</Route>

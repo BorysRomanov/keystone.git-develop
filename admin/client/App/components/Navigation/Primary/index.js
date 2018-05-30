@@ -96,9 +96,17 @@ var PrimaryNavigation = React.createClass({
 			lists: [{
 				key: 'statistic',
 				label: 'Statistic',
-				path: 'statistic'
-			}]
-		})
+				path: 'statistic',
+			}],
+		}, {
+			key: 'backgrounds',
+			label: 'Backgrounds',
+			lists: [{
+				key: 'backgrounds',
+				label: 'Backgrounds',
+				path: 'backgrounds',
+			}],
+		});
 
 		return extendedSections.map((section) => {
 			// Get the link and the class name
@@ -134,7 +142,7 @@ var PrimaryNavigation = React.createClass({
 					<div className="navbar-link-tutorial">
 						<span>{`Latest App Release: ${APP_VERSION}`}</span>
 						<span>Download the <a href="https://www.google.com/" target="_blank">Tutorial Document</a></span>
-					</div>					
+					</div>
 				</Container>
 			</nav>
 		);
