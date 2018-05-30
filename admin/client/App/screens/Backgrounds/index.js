@@ -1,31 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import DatePicker from 'react-datepicker';
+//import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {
 	InlineGroup as Group,
 	InlineGroupSection as Section,
-	Container
+	Container,
+	Button
 } from '../../elemental';
 import {
-	loadStatistic,
+	loadBackgrounds,
 } from './actions';
 
 class Backgrounds extends Component {
 	state = {
 		dateFrom: moment.utc().startOf('month'),
 		dateTo: moment.utc().endOf('day')
-	}
+	};
 
 	componentDidMount () {
-		this.props.dispatch(loadStatistic({
-			dateFrom: this.state.dateFrom,
-			dateTo: this.state.dateTo
-		}));
-		const datePickers=document.getElementsByClassName("react-datepicker__input-container");
-		for(let i=0; i< datePickers.length; i++) {
-			datePickers[i].childNodes[0].setAttribute("readOnly", true);
-		}
+		this.props.dispatch(loadBackgrounds());
+		// const datePickers=document.getElementsByClassName("react-datepicker__input-container");
+		// for(let i=0; i< datePickers.length; i++) {
+		// 	datePickers[i].childNodes[0].setAttribute("readOnly", true);
+		// }
 	}
 
 	handleDateChange = (dateType) => (date) => {
@@ -58,39 +56,21 @@ class Backgrounds extends Component {
 			<Group block>
 				<Section grow>
 					<Container style={{ paddingTop: '2em' }}>
-						<h1>Number of Bobbleheads</h1>
-						<div className="select-date-panel">
-							<div className="left-part">
-								<span>From: </span>
-								<DatePicker
-									selected={this.state.dateFrom}
-									onChange={this.handleDateChange('dateFrom')}
-									dateFormat="YYYY-MM-DD"
-									inputProps={{disabled: true}}
-								/>
-								<span> YYYY-MM-DD </span>
-							</div>
-							<div className="right-part">
-								<span>To: </span>
-								<DatePicker
-										selected={this.state.dateTo}
-										onChange={this.handleDateChange('dateTo')}
-										dateFormat="YYYY-MM-DD"
-										inputProps={{disabled: true}}
-									/>
-								<span> YYYY-MM-DD </span>
-							</div>
+						<h1>Backgrounds</h1>
+						<div style={{ display: 'flex' }}>
+							<Button>Upload</Button>
+							<Button>Delete</Button>
 						</div>
 						<div className="ItemList-wrapper">
 							<table cellpadding="0" cellspacing="0" className="Table ItemList">
 								<thead>
-									<tr>
-										<th>Data</th>
-										<th>Numbers</th>
-									</tr>
+								<tr>
+									<th>Index</th>
+									<th>Source</th>
+								</tr>
 								</thead>
 								<tbody>
-									{tbody}
+								{tbody}
 								</tbody>
 							</table>
 						</div>
@@ -102,7 +82,7 @@ class Backgrounds extends Component {
 }
 
 module.exports = connect((state) => {
-	const { rows, total } = state.statistic;
+	const { rows, total } = state.backgrounds;
 	return {
 		rows,
 		total

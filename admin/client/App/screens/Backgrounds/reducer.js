@@ -1,5 +1,5 @@
 import {
-	STATISTIC_LOADING,
+	BACKGROUNDS_LOADING,
 	STATISTIC_LOADING_ERROR,
 	STATISTIC_SUCCESSFULLY_LOADED
 } from './constants';
@@ -12,9 +12,9 @@ const initialState = {
 	errors: null
 };
 
-function statistic (state = initialState, action) {
+function backgrounds (state = initialState, action) {
 	switch (action.type) {
-		case STATISTIC_LOADING:
+		case BACKGROUNDS_LOADING:
 			return assign({}, state, {
 				isLoading: true,
 			});
@@ -34,4 +34,4 @@ function statistic (state = initialState, action) {
 	}
 }
 
-export default statistic;
+export default backgrounds;
