@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import ImageUploader from 'react-images-upload';
 //import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {
@@ -36,6 +37,13 @@ class Backgrounds extends Component {
 		this.props.dispatch(loadStatistic(newDate));
 	}
 
+	handleUpload = () => {
+		console.log('asda');
+	};
+	onDrop = (picture) => {
+		console.log(picture);
+	}
+
 	render() {
 		const tbody = [];
 		Object.keys(this.props.rows).forEach(key => {
@@ -58,7 +66,14 @@ class Backgrounds extends Component {
 					<Container style={{ paddingTop: '2em' }}>
 						<h1>Backgrounds</h1>
 						<div style={{ display: 'flex' }}>
-							<Button>Upload</Button>
+							<ImageUploader
+								withIcon={true}
+								buttonText='Choose images'
+								onChange={this.onDrop}
+								imgExtension={['.jpg', '.gif', '.png', '.gif']}
+								maxFileSize={5242880}
+							/>
+							<Button onClick={this.handleUpload}>Upload</Button>
 							<Button>Delete</Button>
 						</div>
 						<div className="ItemList-wrapper">

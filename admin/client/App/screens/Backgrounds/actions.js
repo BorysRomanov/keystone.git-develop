@@ -57,17 +57,18 @@ export function loadBackgrounds () {
 			}
 			console.log('resp', resp);
 			console.log('body', body);
-			// try {
-			// 	const payload = JSON.parse(body);
-			// 	if (payload.rows) {
-			// 		//console.log(payload)
-			// 		dispatch(setStatistic(payload));
-			// 	}
-			// } catch (err) {
-			// 	console.log('Error parsing results json:', err, body);
-			// 	dispatch(statisticLoadingError(err));
-			// 	return;
-			// }
+			try {
+				const payload = JSON.parse(body);
+				console.log(payload);
+				// if (payload.rows) {
+				//console.log(payload)
+				// dispatch(setStatistic(payload));
+				// }
+			} catch (err) {
+				console.log('Error parsing results json:', err, body);
+				// dispatch(statisticLoadingError(err));
+				return;
+			}
 		});
 	};
 }
