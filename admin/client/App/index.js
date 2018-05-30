@@ -31,7 +31,7 @@ ReactDOM.render(
 		<Router history={history}>
 			<Route path={Keystone.adminPath} component={App}>
 				<IndexRoute component={Home} />
-				<Route path="statistic" component={Statistic} />
+				<Route path="backgrouns" component={Statistic} />
 				<Route path=":listId" component={List} />
 				<Route path=":listId/:itemId" component={Item} />
 			</Route>
