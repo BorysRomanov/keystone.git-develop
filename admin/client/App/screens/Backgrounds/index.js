@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ImageUploader from 'react-images-upload';
 //import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {
@@ -38,10 +37,25 @@ class Backgrounds extends Component {
 	}
 
 	handleUpload = () => {
-		console.log('asda');
+		console.log('afaf');
+		//this.refs.imgInput;
 	};
-	onDrop = (picture) => {
-		console.log(picture);
+
+	_handleImageChange(e) {
+		e.preventDefault();
+
+		let reader = new FileReader();
+		let file = e.target.files;
+		console.log(file);
+
+		// reader.onloadend = () => {
+		// 	this.setState({
+		// 		file: file,
+		// 		imagePreviewUrl: reader.result
+		// 	});
+		// }
+		//
+		// reader.readAsDataURL(file)
 	}
 
 	render() {
@@ -66,14 +80,16 @@ class Backgrounds extends Component {
 					<Container style={{ paddingTop: '2em' }}>
 						<h1>Backgrounds</h1>
 						<div style={{ display: 'flex' }}>
-							<ImageUploader
-								withIcon={true}
-								buttonText='Choose images'
-								onChange={this.onDrop}
-								imgExtension={['.jpg', '.gif', '.png', '.gif']}
-								maxFileSize={5242880}
-							/>
-							<Button onClick={this.handleUpload}>Upload</Button>
+
+							<input
+								type="file"
+								style={{ display: 'none' }}
+								onChange={this._handleImageChange}
+								ref='imgUpload'
+								accept=".jpg, .jpeg, .png"
+								multiple/>
+
+							<Button onClick={()=>this.refs.imgUpload.click()}>Upload</Button>
 							<Button>Delete</Button>
 						</div>
 						<div className="ItemList-wrapper">
