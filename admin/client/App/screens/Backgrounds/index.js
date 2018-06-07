@@ -10,30 +10,14 @@ import {
 } from '../../elemental';
 import {
 	loadBackgrounds,
+	createBackgrounds,
+	deleteBackgrounds,
 } from './actions';
 
 class Backgrounds extends Component {
-	state = {
-		dateFrom: moment.utc().startOf('month'),
-		dateTo: moment.utc().endOf('day')
-	};
 
 	componentDidMount () {
 		this.props.dispatch(loadBackgrounds());
-		// const datePickers=document.getElementsByClassName("react-datepicker__input-container");
-		// for(let i=0; i< datePickers.length; i++) {
-		// 	datePickers[i].childNodes[0].setAttribute("readOnly", true);
-		// }
-	}
-
-	handleDateChange = (dateType) => (date) => {
-		const correctedDate = dateType === 'dateTo' ? moment.utc(date).endOf('day') : moment.utc(date).startOf('day');
-		this.setState({
-			[dateType]: correctedDate
-		});
-		const newDate = {...this.state};
-		newDate[dateType] = correctedDate;
-		this.props.dispatch(loadStatistic(newDate));
 	}
 
 	handleUpload = () => {
@@ -45,8 +29,15 @@ class Backgrounds extends Component {
 		e.preventDefault();
 
 		let reader = new FileReader();
-		let file = e.target.files;
-		console.log(file);
+		const files = e.target.files;
+		console.log(files);
+		const formData = new FormData();
+		[...files].forEach((file, index)=>{
+			formData.append('file' + index, file);
+		});
+		this.props.dispatch(createBackgrounds(formData))
+
+
 
 		// reader.onloadend = () => {
 		// 	this.setState({
@@ -58,13 +49,19 @@ class Backgrounds extends Component {
 		// reader.readAsDataURL(file)
 	}
 
+	_handleDelete(id){
+		this.props.dispatch(deleteBackgrounds(id));
+	}
+
 	render() {
 		const tbody = [];
-		Object.keys(this.props.rows).forEach(key => {
+		const {list} = this.props;
+		console.log(this.props);
+		list.forEach((item, key) => {
 			tbody.push(
 				<tr>
 					<td className="ItemList__col">{key}</td>
-					<td>{this.props.rows[key]}</td>
+					<td>{JSON.stringify(item)}</td>
 				</tr>
 			)
 		});
@@ -84,13 +81,13 @@ class Backgrounds extends Component {
 							<input
 								type="file"
 								style={{ display: 'none' }}
-								onChange={this._handleImageChange}
+								onChange={this._handleImageChange.bind(this)}
 								ref='imgUpload'
 								accept=".jpg, .jpeg, .png"
 								multiple/>
 
 							<Button onClick={()=>this.refs.imgUpload.click()}>Upload</Button>
-							<Button>Delete</Button>
+							<Button onClick={this._handleDelete.bind(this, 'all')}>Delete</Button>
 						</div>
 						<div className="ItemList-wrapper">
 							<table cellpadding="0" cellspacing="0" className="Table ItemList">
@@ -113,9 +110,9 @@ class Backgrounds extends Component {
 }
 
 module.exports = connect((state) => {
-	const { rows, total } = state.backgrounds;
+	const { list, total } = state.backgrounds;
 	return {
-		rows,
+		list,
 		total
 	};
 })(Backgrounds);

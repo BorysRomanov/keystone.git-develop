@@ -1,14 +1,13 @@
 import {
 	BACKGROUNDS_LOADING,
-	STATISTIC_LOADING_ERROR,
-	STATISTIC_SUCCESSFULLY_LOADED
+	BACKGROUNDS_SETUP,
 } from './constants';
 import assign from 'object-assign';
 
 const initialState = {
-	rows: {},
-	total: null,
-	isLoading: false,
+	list: [],
+	total: 0,
+	loaded: false,
 	errors: null
 };
 
@@ -16,19 +15,14 @@ function backgrounds (state = initialState, action) {
 	switch (action.type) {
 		case BACKGROUNDS_LOADING:
 			return assign({}, state, {
-				isLoading: true,
+				loaded: action.payload.loaded || false,
 			});
-		case STATISTIC_SUCCESSFULLY_LOADED:
+		case BACKGROUNDS_SETUP: {
 			return assign({}, state, {
-				isLoading: false,
-				rows: action.payload.rows,
-				total: action.payload.total,
-			});
-		case STATISTIC_LOADING_ERROR:
-			return assign({}, state, {
-				loading: false,
-				error: action.err,
-			});
+				list: action.payload.list || [],
+				loaded: true,
+			})
+		}
 		default:
 			return state;
 	}

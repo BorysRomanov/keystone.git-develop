@@ -1,86 +1,109 @@
 import xhr from 'xhr';
 import {
 	BACKGROUNDS_LOADING,
-	STATISTIC_LOADING_ERROR,
-	STATISTIC_SUCCESSFULLY_LOADED,
+	BACKGROUNDS_SETUP,
 } from './constants';
-import { NETWORK_ERROR_RETRY_DELAY } from '../../../constants';
 
-// export function loadStatistic (date) {
-// 	return (dispatch) => {
-// 		dispatch({
-// 			type: STATISTIC_LOADING,
-// 		});
-// 		xhr({
-// 			method: 'post',
-// 			body: JSON.stringify(date),
-// 			url: `/api/statistic`,
-// 			headers: {
-// 				"Content-Type": "application/json"
-// 			},
-// 		}, (err, resp, body) => {
-// 			if (err) {
-// 				dispatch(statisticLoadingError(err));
-// 				return;
-// 			}
-// 			try {
-// 				const payload = JSON.parse(body);
-// 				if (payload.rows) {
-// 					//console.log(payload)
-// 					dispatch(setStatistic(payload));
-// 				}
-// 			} catch (err) {
-// 				console.log('Error parsing results json:', err, body);
-// 				dispatch(statisticLoadingError(err));
-// 				return;
-// 			}
-// 		});
-// 	};
-// }
 
-export function loadBackgrounds () {
-	return (dispatch) => {
+export function loadBackgrounds() {
+	return async dispatch => {
 		dispatch({
 			type: BACKGROUNDS_LOADING,
+			payload: {loaded: false},
 		});
-		xhr({
-			method: 'get',
-			url: `/api/backgrounds/get`,
-			headers: {
-				"Content-Type": "application/json"
-			},
-		}, (err, resp, body) => {
-			if (err) {
-				console.log(err);
-				// dispatch(statisticLoadingError(err));
-				return;
-			}
-			console.log('resp', resp);
-			console.log('body', body);
-			try {
-				const payload = JSON.parse(body);
-				console.log(payload);
-				// if (payload.rows) {
-				//console.log(payload)
-				// dispatch(setStatistic(payload));
-				// }
-			} catch (err) {
-				console.log('Error parsing results json:', err, body);
-				// dispatch(statisticLoadingError(err));
-				return;
-			}
-		});
+		try {
+			const response = await new Promise((resolve, reject) => {
+				xhr({
+					method: 'get',
+					url: `/api/backgrounds`,
+					headers: {
+						"Content-Type": "application/json"
+					},
+				}, (err, resp, body) => {
+					if (err) reject(err);
+					else resolve(JSON.parse(body));
+				});
+			});
+
+			dispatch({
+				type: BACKGROUNDS_SETUP,
+				payload: {
+					list: response.backgrounds,
+				}
+			});
+
+		} catch (error) {
+			console.error(error);
+		}
+	};
+}
+export function createBackgrounds(formData) {
+	return async dispatch => {
+		try {
+			const response = await new Promise((resolve, reject) => {
+				xhr({
+					method: 'post',
+					url: `/api/backgrounds`,
+					body: formData,
+					// headers: {
+					// 	"Content-Type": "multipart/form-data"
+					// },
+				}, (err, resp, body) => {
+					if (err) reject(err);
+					else resolve(JSON.parse(body));
+				});
+			});
+
+			dispatch({
+				type: BACKGROUNDS_SETUP,
+				payload: {
+					list: response.backgrounds,
+				}
+			});
+
+		} catch (error) {
+			console.error(error);
+		}
 	};
 }
 
-export function setStatistic (payload) {
+export function deleteBackgrounds(id) {
+	return async dispatch => {
+		try {
+			const response = await new Promise((resolve, reject) => {
+				xhr({
+					method: 'delete',
+					url: `/api/backgrounds/${id}`,
+					headers: {
+						"Content-Type": "application/json"
+					},
+				}, (err, resp, body) => {
+					if (err) reject(err);
+					else resolve(JSON.parse(body));
+				});
+			});
+
+			dispatch({
+				type: BACKGROUNDS_SETUP,
+				payload: {
+					list: response.backgrounds,
+				}
+			});
+
+		} catch (error) {
+			console.error(error);
+		}
+	};
+}
+
+export function setStatistic(payload) {
 	return {
 		type: STATISTIC_SUCCESSFULLY_LOADED,
 		payload,
 	};
 }
 
-export function statisticLoadingError (payload) {
+export function statisticLoadingError(payload) {
 	return {
 		type: STATISTIC_LOADING_ERROR,
 		payload,
