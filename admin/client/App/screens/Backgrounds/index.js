@@ -61,14 +61,14 @@ class Backgrounds extends Component {
 			tbody.push(
 				<tr>
 					<td className="ItemList__col">{key}</td>
-					<td>{JSON.stringify(item)}</td>
+					<td><img src={item.url}/></td>
 				</tr>
 			)
 		});
 		tbody.push(
 			<tr>
 				<td className="ItemList__col total-bold">TOTAL</td>
-				<td className="total-bold">{this.props.total}</td>
+				<td className="total-bold">{list.length || 0}</td>
 			</tr>
 		)
 		return (
@@ -83,7 +83,7 @@ class Backgrounds extends Component {
 								style={{ display: 'none' }}
 								onChange={this._handleImageChange.bind(this)}
 								ref='imgUpload'
-								accept=".jpg, .jpeg, .png"
+								accept=".jpg, .jpeg"
 								multiple/>
 
 							<Button onClick={()=>this.refs.imgUpload.click()}>Upload</Button>
