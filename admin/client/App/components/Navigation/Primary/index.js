@@ -128,7 +128,7 @@ var PrimaryNavigation = React.createClass({
 		});
 	},
 	render () {
-		const APP_VERSION = '0.1.96 (10601)';
+		const APP_VERSION = '1.0.2 (10002)';
 		if (!this.state.navIsVisible) return null;
 
 		return (
