@@ -30,7 +30,6 @@ class Backgrounds extends Component {
 
 		let reader = new FileReader();
 		const files = e.target.files;
-		console.log(files);
 		const formData = new FormData();
 		[...files].forEach((file, index)=>{
 			formData.append('file' + index, file);
@@ -60,8 +59,9 @@ class Backgrounds extends Component {
 		list.forEach((item, key) => {
 			tbody.push(
 				<tr>
-					<td className="ItemList__col">{key}</td>
-					<td><img src={item.url}/></td>
+					<td><Button onClick={this._handleDelete.bind(this, item._id)}>Delete</Button></td>
+					<td className="ItemList__col">{key + 1}</td>
+					<td><img width="200px" src={item.url}/></td>
 				</tr>
 			)
 		});
@@ -87,7 +87,7 @@ class Backgrounds extends Component {
 								multiple/>
 
 							<Button onClick={()=>this.refs.imgUpload.click()}>Upload</Button>
-							<Button onClick={this._handleDelete.bind(this, 'all')}>Delete</Button>
+							<Button onClick={this._handleDelete.bind(this, 'all')}>Delete all</Button>
 						</div>
 						<div className="ItemList-wrapper">
 							<table cellpadding="0" cellspacing="0" className="Table ItemList">
