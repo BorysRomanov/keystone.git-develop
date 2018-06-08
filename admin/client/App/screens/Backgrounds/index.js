@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-//import DatePicker from 'react-datepicker';
-import moment from 'moment';
 import {
 	InlineGroup as Group,
 	InlineGroupSection as Section,
@@ -20,32 +18,14 @@ class Backgrounds extends Component {
 		this.props.dispatch(loadBackgrounds());
 	}
 
-	handleUpload = () => {
-		console.log('afaf');
-		//this.refs.imgInput;
-	};
-
 	_handleImageChange(e) {
 		e.preventDefault();
-
-		let reader = new FileReader();
 		const files = e.target.files;
 		const formData = new FormData();
 		[...files].forEach((file, index)=>{
 			formData.append('file' + index, file);
 		});
-		this.props.dispatch(createBackgrounds(formData))
-
-
-
-		// reader.onloadend = () => {
-		// 	this.setState({
-		// 		file: file,
-		// 		imagePreviewUrl: reader.result
-		// 	});
-		// }
-		//
-		// reader.readAsDataURL(file)
+		this.props.dispatch(createBackgrounds(formData));
 	}
 
 	_handleDelete(id){
@@ -55,7 +35,6 @@ class Backgrounds extends Component {
 	render() {
 		const tbody = [];
 		const {list} = this.props;
-		console.log(this.props);
 		list.forEach((item, key) => {
 			tbody.push(
 				<tr>
@@ -83,7 +62,7 @@ class Backgrounds extends Component {
 								style={{ display: 'none' }}
 								onChange={this._handleImageChange.bind(this)}
 								ref='imgUpload'
-								accept=".jpg, .jpeg"
+								accept=".jpg, .jpeg, .png"
 								multiple/>
 
 							<Button onClick={()=>this.refs.imgUpload.click()}>Upload</Button>

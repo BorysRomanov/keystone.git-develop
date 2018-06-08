@@ -45,9 +45,6 @@ export function createBackgrounds(formData) {
 					method: 'post',
 					url: `/api/backgrounds`,
 					body: formData,
-					// headers: {
-					// 	"Content-Type": "multipart/form-data"
-					// },
 				}, (err, resp, body) => {
 					if (err) reject(err);
 					else resolve(JSON.parse(body));
@@ -93,19 +90,5 @@ export function deleteBackgrounds(id) {
 		} catch (error) {
 			console.error(error);
 		}
-	};
-}
-
-export function setStatistic(payload) {
-	return {
-		type: STATISTIC_SUCCESSFULLY_LOADED,
-		payload,
-	};
-}
-
-export function statisticLoadingError(payload) {
-	return {
-		type: STATISTIC_LOADING_ERROR,
-		payload,
 	};
 }
