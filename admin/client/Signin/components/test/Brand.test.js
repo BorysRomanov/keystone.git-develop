@@ -12,7 +12,7 @@ describe('<Brand />', () => {
 
 	it('should render the KeystoneJS logo by default', () => {
 		const component = shallow(<Brand />);
-		demand(component.find('img').prop('src')).eql('/images/logo.png');
+		demand(component.find('img').prop('src')).eql('/images/argos.svg');
 		demand(component.find('img').prop('width')).eql(205);
 		demand(component.find('img').prop('height')).eql(68);
 	});
@@ -25,7 +25,7 @@ describe('<Brand />', () => {
 	it('should handle that the admin path is changed for the default logo', () => {
 		global.Keystone.adminPath = '/admin';
 		const component = shallow(<Brand />);
-		demand(component.find('img').prop('src')).eql('/admin/images/logo.png');
+		demand(component.find('img').prop('src')).eql('/admin/images/argos.svg');
 		demand(component.find('img').prop('width')).eql(205);
 		demand(component.find('img').prop('height')).eql(68);
 	});
